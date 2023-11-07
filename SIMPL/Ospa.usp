@@ -1,0 +1,312 @@
+
+#CATEGORY "46" "SWIMMING POOL" // Custom
+
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+//#ENABLE_TRACE
+
+#USER_SIMPLSHARP_LIBRARY "OspaSS"
+                                         
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	connect_tp;		DIGITAL_OUTPUT	connected;
+DIGITAL_INPUT	disconnect_tp;		DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	DEBUG;			DIGITAL_OUTPUT	granted;
+ANALOG_OUTPUT	_SKIP_;			ANALOG_OUTPUT	RedoxIst;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	TempIst_1_2;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	pHIst;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	ChlorIst;
+ANALOG_INPUT	TempSoll_1;		ANALOG_OUTPUT	TempSollWert_1;
+ANALOG_INPUT	TempSoll_2;		ANALOG_OUTPUT	TempSollWert_2;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	RaumTempIst;
+ANALOG_INPUT	RaumTempSoll;		ANALOG_OUTPUT	RaumTempSollWert;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	RaumFeuchteIst;
+ANALOG_INPUT	RaumFeuchteSoll;	ANALOG_OUTPUT	RaumFeuchteSollWert;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	WasserwerteGueltig;
+
+DIGITAL_INPUT	AttrBetrieb1_Ein;			DIGITAL_OUTPUT	AttrBetrieb1;
+DIGITAL_INPUT	AttrBetrieb1_Aus;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	AttrBetrieb2_Ein;			DIGITAL_OUTPUT	AttrBetrieb2;
+DIGITAL_INPUT	AttrBetrieb2_Aus;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	AttrBetrieb3_Ein;			DIGITAL_OUTPUT	AttrBetrieb3;
+DIGITAL_INPUT	AttrBetrieb3_Aus;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	AttrBetrieb4_Ein;			DIGITAL_OUTPUT	AttrBetrieb4;
+DIGITAL_INPUT	AttrBetrieb4_Aus;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	AttrBetrieb5_Ein;			DIGITAL_OUTPUT	AttrBetrieb5;
+DIGITAL_INPUT	AttrBetrieb5_Aus;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	AttrBetrieb6_Ein;			DIGITAL_OUTPUT	AttrBetrieb6;
+DIGITAL_INPUT	AttrBetrieb6_Aus;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	AttrBetrieb7_Ein;			DIGITAL_OUTPUT	AttrBetrieb7;
+DIGITAL_INPUT	AttrBetrieb7_Aus;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	AttrBetrieb8_Ein;			DIGITAL_OUTPUT	AttrBetrieb8;
+DIGITAL_INPUT	AttrBetrieb8_Aus;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	AttrBetrieb9_Ein;			DIGITAL_OUTPUT	AttrBetrieb9;
+DIGITAL_INPUT	AttrBetrieb9_Aus;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	AttrBetrieb10_Ein;			DIGITAL_OUTPUT	AttrBetrieb10;
+DIGITAL_INPUT	AttrBetrieb10_Aus;			DIGITAL_OUTPUT	_SKIP_;
+
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	Uws1SbEin;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	Uws1WpEin;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	WpEin;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	SbEin;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	RinneEin;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	BodenreinigerEin;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	FilteranlageBetrieb;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	StoerungWasserwerte;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	Sammelstoerung;
+
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	LichtSzene;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	FilterBetriebsart;
+
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	KlimaBetrieb;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	KlimaBadebetrieb;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	KlimaFrischluftbetrieb;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	AlarmeAnstehend;
+
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	FilterpumpeVoruebergehendSchalten;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	TempRegler1_Aktiv;
+
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	RedoxSoll;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	pHSollWert;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	ChlorSollWert;
+
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	KlimaFrischluftschaltung;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	AbschaltenWegenDurchflussmangel;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	AlarmMaxFrischwasserNachspeisung;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	AlarmLeckageErkannt;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	ErrTestAbsperrhahn1;
+
+STRING_INPUT	_SKIP_;			STRING_OUTPUT	DEBUG$;
+
+STRING_PARAMETER HostName[256];
+
+Ospa Client;
+
+Push connect_tp
+{
+	Client.Enable(1);
+}
+
+Push disconnect_tp
+{
+	Client.Enable(0);
+}
+
+Change DEBUG
+{
+	Client.Debug = DEBUG;
+}
+
+Push AttrBetrieb1_Ein
+{
+	Client.Send(12,1);
+}
+Push AttrBetrieb1_Aus
+{
+	Client.Send(12,0);
+}
+Push AttrBetrieb2_Ein
+{
+	Client.Send(13,1);
+}
+Push AttrBetrieb2_Aus
+{
+	Client.Send(13,0);
+}
+Push AttrBetrieb3_Ein
+{
+	Client.Send(14,1);
+}
+Push AttrBetrieb3_Aus
+{
+	Client.Send(14,0);
+}
+Push AttrBetrieb4_Ein
+{
+	Client.Send(15,1);
+}
+Push AttrBetrieb4_Aus
+{
+	Client.Send(15,0);
+}
+Push AttrBetrieb5_Ein
+{
+	Client.Send(16,1);
+}
+Push AttrBetrieb5_Aus
+{
+	Client.Send(16,0);
+}
+Push AttrBetrieb6_Ein
+{
+	Client.Send(17,1);
+}
+Push AttrBetrieb6_Aus
+{
+	Client.Send(17,0);
+}
+Push AttrBetrieb7_Ein
+{
+	Client.Send(18,1);
+}
+Push AttrBetrieb7_Aus
+{
+	Client.Send(18,0);
+}
+Push AttrBetrieb8_Ein
+{
+	Client.Send(19,1);
+}
+Push AttrBetrieb8_Aus
+{
+	Client.Send(19,0);
+}
+Push AttrBetrieb9_Ein
+{
+	Client.Send(20,1);
+}
+Push AttrBetrieb9_Aus
+{
+	Client.Send(20,0);
+}
+Push AttrBetrieb10_Ein
+{
+	Client.Send(21,1);
+}
+Push AttrBetrieb10_Aus
+{
+	Client.Send(21,0);
+}
+
+
+Callback Function MyOnConnectChange(SIGNED_LONG_INTEGER state)
+{
+	connected = (state!=0);
+}
+
+Callback Function MyOnGrantedChange(SIGNED_LONG_INTEGER state)
+{
+	granted = (state!=0);
+}
+
+Callback Function MyOnValueReported(SIGNED_LONG_INTEGER num, SIGNED_LONG_INTEGER val)
+{
+	switch( num )
+	{
+		case (1):
+			TempIst_1_2 = val;
+		case (2):
+			RedoxIst = val;
+		case (3):
+			pHIst = val;
+		case (4):
+			ChlorIst = val;
+		case (5):
+			TempSollWert_1 = val;
+		case (6):
+			TempSollWert_2 = val;
+		case (7):
+			RaumTempIst = val;
+		case (8):
+			RaumTempSollWert = val;
+		case (9):
+			RaumFeuchteIst = val;
+		case (10):
+			RaumFeuchteSollWert = val;
+		case (11):
+			WasserwerteGueltig = val;
+		case (12):
+			AttrBetrieb1 = val;
+		case (13):
+			AttrBetrieb2 = val;
+		case (14):
+			AttrBetrieb3 = val;
+		case (15):
+			AttrBetrieb4 = val;
+		case (16):
+			AttrBetrieb5 = val;
+		case (17):
+			AttrBetrieb6 = val;
+		case (18):
+			AttrBetrieb7 = val;
+		case (19):
+			AttrBetrieb8 = val;
+		case (20):
+			AttrBetrieb9 = val;
+		case (21):
+			AttrBetrieb10 = val;
+		case (22):
+			Uws1SbEin = val;
+		case (23):
+			Uws1WpEin = val;
+		case (24):
+			WpEin = val;
+		case (25):
+			SbEin = val;
+		case (26):
+			RinneEin = val;
+		case (27):
+			BodenreinigerEin = val;
+		case (28):
+			FilteranlageBetrieb = val;
+		case (29):
+			StoerungWasserwerte = val;
+		case (30):
+			Sammelstoerung = val;
+		case (31):
+			LichtSzene = val;
+		case (32):
+			FilterBetriebsart = val;
+		case (33):
+			KlimaBetrieb = val;
+		case (34):
+			KlimaBadebetrieb = val;
+		case (35):
+			KlimaFrischluftbetrieb = val;
+		case (36):
+			AlarmeAnstehend = val;
+		case (37):
+			FilterpumpeVoruebergehendSchalten = val;
+		case (38):
+			TempRegler1_Aktiv = val;
+		case (39):
+			RedoxSoll = val;
+		case (40):
+			pHSollWert = val;
+		case (41):
+			ChlorSollWert = val;
+		case (42):
+			KlimaFrischluftschaltung = val;
+		case (43):
+			AbschaltenWegenDurchflussmangel = val;
+		case (44):
+			AlarmMaxFrischwasserNachspeisung = val;
+		case (45):
+			AlarmLeckageErkannt = val;
+		case (46):
+			ErrTestAbsperrhahn1 = val;
+	}
+}
+
+change TempSoll_1
+{
+	Client.Send( 5, TempSoll_1);
+}
+
+Callback Function MyOnLog(STRING s)
+{
+	DEBUG$ = s;
+}
+Function Init()
+{
+	RegisterDelegate(Client,OnConnectChange,MyOnConnectChange);
+	RegisterDelegate(Client,OnGrantedChange,MyOnGrantedChange);
+	RegisterDelegate(Client,OnValueReported,MyOnValueReported);
+	RegisterDelegate(Client,OnLog,MyOnLog);
+	Client.Initialize(HostName);
+}
+
+Function Main()
+{
+	WaitForInitializationComplete();
+	Init();
+}
