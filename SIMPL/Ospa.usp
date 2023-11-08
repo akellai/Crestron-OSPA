@@ -11,17 +11,10 @@ DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
 DIGITAL_INPUT	connect_tp;		DIGITAL_OUTPUT	connected;
 DIGITAL_INPUT	disconnect_tp;		DIGITAL_OUTPUT	_SKIP_;
 DIGITAL_INPUT	DEBUG;			DIGITAL_OUTPUT	granted;
-ANALOG_OUTPUT	_SKIP_;			ANALOG_OUTPUT	RedoxIst;
-ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	TempIst_1_2;
-ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	pHIst;
-ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	ChlorIst;
-ANALOG_INPUT	TempSoll_1;		ANALOG_OUTPUT	TempSollWert_1;
-ANALOG_INPUT	TempSoll_2;		ANALOG_OUTPUT	TempSollWert_2;
-ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	RaumTempIst;
-ANALOG_INPUT	RaumTempSoll;		ANALOG_OUTPUT	RaumTempSollWert;
-ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	RaumFeuchteIst;
-ANALOG_INPUT	RaumFeuchteSoll;	ANALOG_OUTPUT	RaumFeuchteSollWert;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
+
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	WasserwerteGueltig;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
 
 DIGITAL_INPUT	AttrBetrieb1_Ein;			DIGITAL_OUTPUT	AttrBetrieb1;
 DIGITAL_INPUT	AttrBetrieb1_Aus;			DIGITAL_OUTPUT	_SKIP_;
@@ -43,38 +36,50 @@ DIGITAL_INPUT	AttrBetrieb9_Ein;			DIGITAL_OUTPUT	AttrBetrieb9;
 DIGITAL_INPUT	AttrBetrieb9_Aus;			DIGITAL_OUTPUT	_SKIP_;
 DIGITAL_INPUT	AttrBetrieb10_Ein;			DIGITAL_OUTPUT	AttrBetrieb10;
 DIGITAL_INPUT	AttrBetrieb10_Aus;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
 
-DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	Uws1SbEin;
+DIGITAL_INPUT	Uws1SbEin_tp;		DIGITAL_OUTPUT	Uws1SbEin;
+DIGITAL_INPUT	Uws1SbAus_tp;		DIGITAL_OUTPUT	_SKIP_;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	Uws1WpEin;
-DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	WpEin;
+DIGITAL_INPUT	WpEin_tp;		DIGITAL_OUTPUT	WpEin;
+DIGITAL_INPUT	WpAus_tp;		DIGITAL_OUTPUT	_SKIP_;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	SbEin;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	RinneEin;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	BodenreinigerEin;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	FilteranlageBetrieb;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	StoerungWasserwerte;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	Sammelstoerung;
-
-ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	LichtSzene;
-ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	FilterBetriebsart;
-
-DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	KlimaBetrieb;
-DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	KlimaBadebetrieb;
-DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	KlimaFrischluftbetrieb;
+DIGITAL_INPUT	KlimaBetrieb_tp;	DIGITAL_OUTPUT	KlimaBetrieb;
+DIGITAL_INPUT	KlimaBadebetrieb_tp;	DIGITAL_OUTPUT	KlimaBadebetrieb;
+DIGITAL_INPUT	KlimaFrischluftbetrieb_tp;	DIGITAL_OUTPUT	KlimaFrischluftbetrieb;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	AlarmeAnstehend;
-
-ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	FilterpumpeVoruebergehendSchalten;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	TempRegler1_Aktiv;
-
-ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	RedoxSoll;
-ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	pHSollWert;
-ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	ChlorSollWert;
-
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	KlimaFrischluftschaltung;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	AbschaltenWegenDurchflussmangel;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	AlarmMaxFrischwasserNachspeisung;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	AlarmLeckageErkannt;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	ErrTestAbsperrhahn1;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	ErrTestAbsperrhahn2;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
 
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	RedoxIst;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	TempIst_1_2;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	pHIst;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	ChlorIst;
+ANALOG_INPUT	TempSoll_1;		ANALOG_OUTPUT	TempSollWert_1;
+ANALOG_INPUT	TempSoll_2;		ANALOG_OUTPUT	TempSollWert_2;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	RaumTempIst;
+ANALOG_INPUT	RaumTempSoll;		ANALOG_OUTPUT	RaumTempSollWert;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	RaumFeuchteIst;
+ANALOG_INPUT	RaumFeuchteSoll;	ANALOG_OUTPUT	RaumFeuchteSollWert;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	LichtSzene;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	FilterBetriebsart;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	FilterpumpeVoruebergehendSchalten;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	RedoxSoll;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	pHSollWert;
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	ChlorSollWert;
+
+ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	_SKIP_;
 STRING_INPUT	_SKIP_;			STRING_OUTPUT	DEBUG$;
 
 STRING_PARAMETER HostName[256];
@@ -177,6 +182,23 @@ Push AttrBetrieb10_Aus
 	Client.Send(21,0);
 }
 
+Push Uws1SbEin_tp
+{
+	Client.Send(22,1);
+}
+Push Uws1SbAus_tp
+{
+	Client.Send(22,0);
+}
+
+Push WpEin_tp
+{
+	Client.Send(24,1);
+}
+Push WpAus_tp
+{
+	Client.Send(24,0);
+}
 
 Callback Function MyOnConnectChange(SIGNED_LONG_INTEGER state)
 {
@@ -284,12 +306,62 @@ Callback Function MyOnValueReported(SIGNED_LONG_INTEGER num, SIGNED_LONG_INTEGER
 			AlarmLeckageErkannt = val;
 		case (46):
 			ErrTestAbsperrhahn1 = val;
+		case (47):
+			ErrTestAbsperrhahn2 = val;
 	}
 }
 
 change TempSoll_1
 {
 	Client.Send( 5, TempSoll_1);
+}
+
+change TempSoll_2
+{
+	Client.Send( 6, TempSoll_2);
+}
+
+change RaumTempSoll
+{
+	Client.Send( 8, RaumTempSoll);
+}
+
+change RaumFeuchteSoll
+{
+	Client.Send( 10, RaumFeuchteSoll);
+}
+
+push KlimaBetrieb_tp
+{
+	long_integer val;
+	if( KlimaBetrieb=0 )
+		val = 1;
+	else
+		val = 0;
+	
+	Client.Send( 33, val );
+}
+
+push KlimaBadebetrieb_tp
+{
+	long_integer val;
+	if( KlimaBadebetrieb=0 )
+		val = 1;
+	else
+		val = 0;
+	
+	Client.Send( 34, val );
+}
+
+push KlimaFrischluftbetrieb_tp
+{
+	long_integer val;
+	if( KlimaFrischluftbetrieb=0 )
+		val = 1;
+	else
+		val = 0;
+	
+	Client.Send( 35, val );
 }
 
 Callback Function MyOnLog(STRING s)
