@@ -4,6 +4,7 @@ using Crestron.SimplSharp;
 using Crestron.SimplSharp.CrestronWebSocketClient;
 using Crestron.SimplSharp.Cryptography;
 using Newtonsoft.Json;
+using Crestron.SimplSharp.Net.Http;
 
 namespace OspaSS
 {
@@ -19,7 +20,10 @@ namespace OspaSS
 
         public delegate void DebugLogHandler(SimplSharpString data);
         public DebugLogHandler OnLog { set; get; }
+        public DebugLogHandler OnOspaMsg { set; get; }
 
+        private string m_ErrURL;
+        private string m_password;
         private string m_accessKey;
         private string m_accessKeyBack;
         private bool m_allowed;
@@ -87,7 +91,7 @@ namespace OspaSS
                 }
                 catch (Exception e)
                 {
-                    Log(e.Message);
+                    Log("Exception: {0}", e.Message);
                 }
             }
         }
@@ -151,6 +155,49 @@ namespace OspaSS
             if (OnValueReported != null)
                 if (val != null)
                     OnValueReported(num, int100(val ?? 0));
+        }
+
+        public void checkMessage()
+        {
+            if (OnOspaMsg == null)
+                return;
+
+            HttpClient client = new HttpClient();
+            HttpClientRequest req = new HttpClientRequest();
+
+            try
+            {
+                client.KeepAlive = false;
+                req.Url.Parse(m_ErrURL);
+            }
+            catch (Exception e)
+            {
+                Log("Exception: {0}", e.Message);
+                return;
+            }
+
+            client.DispatchAsync(req, (resp, e) => 
+            {
+                try 
+                {
+                    if (resp.Code != 200)
+                    {
+                        Log("ERROR: {0}", resp.Code);
+                        return;
+                    }
+
+                    string sdata = resp.ContentString;
+                    for (int i = 0; i < sdata.Length; i += maxChunkSize)
+                    {
+                        string schunk = sdata.Substring(i, Math.Min(maxChunkSize, sdata.Length - i));
+                        OnOspaMsg(new SimplSharpString(schunk));
+                    }
+                }
+                catch (Exception e2)
+                {
+                    Log("Exception: {0}", e2.Message);
+                }
+            });
         }
 
         public void Send(int arg, int val)
@@ -296,6 +343,9 @@ namespace OspaSS
                 case 46:
                     msg.m_ErrTestAbsperrhahn1 = val != 0;
                     break;
+                case 47:
+                    msg.m_ErrTestAbsperrhahn2 = val != 0;
+                    break;
             }
             if (m_allowed)
                 ws_json_send(msg);
@@ -351,7 +401,8 @@ namespace OspaSS
                 reportValue(43, msg.m_AbschaltenWegenDurchflussmangel);
                 reportValue(44, msg.m_AlarmMaxFrischwasserNachspeisung);
                 reportValue(45, msg.m_AlarmLeckageErkannt);
-                reportValue(46, msg.m_ErrTestAbsperrhahn1);        
+                reportValue(46, msg.m_ErrTestAbsperrhahn1);
+                reportValue(47, msg.m_ErrTestAbsperrhahn2);
             }
 
             catch (Exception e)
@@ -383,7 +434,7 @@ namespace OspaSS
                 m_accessKey = key.accessKey;
 
                 SHA1Managed sh1 = new SHA1Managed();
-                byte[] accessKeyBack = sh1.ComputeHash(Encoding.ASCII.GetBytes(m_accessKey));
+                byte[] accessKeyBack = sh1.ComputeHash(Encoding.ASCII.GetBytes(m_accessKey + m_password));
                 m_accessKeyBack = BitConverter.ToString(accessKeyBack).Replace("-", string.Empty).ToLower();
 
                 OspaJson.AccessKeyBack keyBack = new OspaJson.AccessKeyBack();
@@ -443,12 +494,14 @@ namespace OspaSS
             }
         }
 
-        public void Initialize(string host)
+        public void Initialize(string host,string password)
         {
             init();
+            m_password = password;
             keepAliveTimer = new CTimer(OnTimer, Timeout.Infinite);
             wsc = new WebSocketClient();
             wsc.URL = "ws://" + host + ":56525/user";
+            m_ErrURL = "http://" + host + "/csv/errors.txt";
             wsc.Host = host + ":56525";
             wsc.Origin = "http://".ToString() + host + ":56525";
             wsc.DisconnectCallBack += onDisconnect;

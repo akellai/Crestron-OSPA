@@ -8,10 +8,12 @@
 #USER_SIMPLSHARP_LIBRARY "OspaSS"
                                          
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
 DIGITAL_INPUT	connect_tp;		DIGITAL_OUTPUT	connected;
 DIGITAL_INPUT	disconnect_tp;		DIGITAL_OUTPUT	_SKIP_;
 DIGITAL_INPUT	DEBUG;			DIGITAL_OUTPUT	granted;
-DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
+DIGITAL_INPUT	ReadMsg_tp;		DIGITAL_OUTPUT	_SKIP_;
 
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	WasserwerteGueltig;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
@@ -40,7 +42,8 @@ DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	_SKIP_;
 
 DIGITAL_INPUT	Uws1SbEin_tp;		DIGITAL_OUTPUT	Uws1SbEin;
 DIGITAL_INPUT	Uws1SbAus_tp;		DIGITAL_OUTPUT	_SKIP_;
-DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	Uws1WpEin;
+DIGITAL_INPUT	Uws1WpEin_tp;		DIGITAL_OUTPUT	Uws1WpEin;
+DIGITAL_INPUT	Uws1WpAus_tp;		DIGITAL_OUTPUT	_SKIP_;
 DIGITAL_INPUT	WpEin_tp;		DIGITAL_OUTPUT	WpEin;
 DIGITAL_INPUT	WpAus_tp;		DIGITAL_OUTPUT	_SKIP_;
 DIGITAL_INPUT	_SKIP_;			DIGITAL_OUTPUT	SbEin;
@@ -81,8 +84,21 @@ ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	ChlorSollWert;
 
 ANALOG_INPUT	_SKIP_;			ANALOG_OUTPUT	_SKIP_;
 STRING_INPUT	_SKIP_;			STRING_OUTPUT	DEBUG$;
+STRING_INPUT	_SKIP_;			STRING_OUTPUT	MSG$;
 
-STRING_PARAMETER HostName[256];
+STRING_PARAMETER HostName[254];
+STRING_PARAMETER Password[254];
+
+#BEGIN_PARAMETER_PROPERTIES HostName
+   propDefaultValue="";
+   propShortDescription="Host name or IP address of the web interface";
+#END_PARAMETER_PROPERTIES
+
+#BEGIN_PARAMETER_PROPERTIES Password
+   propDefaultValue="";
+   propShortDescription="Password to web interface";
+#END_PARAMETER_PROPERTIES
+
 
 Ospa Client;
 
@@ -189,6 +205,15 @@ Push Uws1SbEin_tp
 Push Uws1SbAus_tp
 {
 	Client.Send(22,0);
+}
+
+Push Uws1WpEin_tp
+{
+	Client.Send(23,1);
+}
+Push Uws1WpAus_tp
+{
+	Client.Send(23,0);
 }
 
 Push WpEin_tp
@@ -331,6 +356,11 @@ change RaumFeuchteSoll
 	Client.Send( 10, RaumFeuchteSoll);
 }
 
+push ReadMsg_tp
+{
+	Client.checkMessage();
+}
+
 push KlimaBetrieb_tp
 {
 	long_integer val;
@@ -368,13 +398,20 @@ Callback Function MyOnLog(STRING s)
 {
 	DEBUG$ = s;
 }
+
+Callback Function MyOnOspaMsg(STRING s)
+{
+	MSG$ = s;
+}
+
 Function Init()
 {
 	RegisterDelegate(Client,OnConnectChange,MyOnConnectChange);
 	RegisterDelegate(Client,OnGrantedChange,MyOnGrantedChange);
 	RegisterDelegate(Client,OnValueReported,MyOnValueReported);
 	RegisterDelegate(Client,OnLog,MyOnLog);
-	Client.Initialize(HostName);
+	RegisterDelegate(Client,OnOspaMsg,MyOnOspaMsg);
+	Client.Initialize(HostName,Password);
 }
 
 Function Main()

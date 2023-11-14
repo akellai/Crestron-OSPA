@@ -76,6 +76,7 @@ namespace OspaSS
             public bool? m_AlarmMaxFrischwasserNachspeisung { get; set; }  // 44
             public bool? m_AlarmLeckageErkannt { get; set; }               // 45
             public bool? m_ErrTestAbsperrhahn1 { get; set; }               // 46
+            public bool? m_ErrTestAbsperrhahn2 { get; set; }               // 47
         }
     }
 }
