@@ -453,6 +453,7 @@ namespace OspaSS
         {
             if (error != WebSocketClient.WEBSOCKET_RESULT_CODES.WEBSOCKET_CLIENT_SUCCESS)
             {
+                Log("ERROR onReceive {0}", error);
                 wsc.DisconnectAsync(this);
                 return (int)error;
             }
@@ -503,7 +504,9 @@ namespace OspaSS
             wsc.URL = "ws://" + host + ":56525/user";
             m_ErrURL = "http://" + host + "/csv/errors.txt";
             wsc.Host = host + ":56525";
-            wsc.Origin = "http://".ToString() + host + ":56525";
+            wsc.Origin = "http://".ToString() + host;
+            wsc.SSL = false;    // On 4 series SSL is on by default
+
             wsc.DisconnectCallBack += onDisconnect;
             wsc.ReceiveCallBack += onReceive;
             wsc.ConnectionCallBack += onConnect;
